@@ -14,7 +14,7 @@ flake8 = "^5.0.4"
 [tool.poetry.dev-dependencies]
 
 [tool.poetry.scripts]
-gendiff = "scripts.gendiff:main"
+gendiff = "project-50.scripts.gendiff:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
