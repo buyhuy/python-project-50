@@ -1,21 +1,20 @@
 #!/usr/bin/env python3
 
-import argparse
-import json
+def make_proper_values(item):
+    copy = item.copy()
+    for key in copy:
+        if copy[key] == True:
+            copy[key] = 'true'
+        elif copy[key] == False:
+            copy[key] = 'false'
+        elif copy[key] == None:
+            copy[key] = 'null'
+    return copy
 
 
-parser = argparse.ArgumentParser(description='Compares two configuration files and shows a difference.')
-parser.add_argument('first_file')
-parser.add_argument('second_file')
-parser.add_argument('-f', '--format', help='set format of output')
-
-arguments = parser.parse_args()
-
-json1 = json.loads(open(arguments.first_file).read())
-json2 = json.loads(open(arguments.second_file).read())
-
-
-def generate_diff(file1, file2):
+def generate_diff(dict1, dict2):
+    file1 = make_proper_values(dict1)
+    file2 = make_proper_values(dict2)
     result = []
     all_keys = list(set(list(file1) + list(file2)))
     for key, value in file1.items():
@@ -36,4 +35,9 @@ def generate_diff(file1, file2):
     print('{\n', *result, '}')
 
 
-generate_diff(json1, json2)
+def main():
+    pass
+
+
+if __name__ == '__main__':
+    main()
