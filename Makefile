@@ -14,4 +14,7 @@ lint:
 		poetry run flake8 project_50
 
 gendiff:
-		poetry run gendiff project_50/files/file2.json project_50/files/file1.json
+		poetry run gendiff tests/fixtures/file1.json tests/fixtures/file2.json
+
+test:
+		poetry run pytest
