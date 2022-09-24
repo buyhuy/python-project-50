@@ -12,17 +12,17 @@ def make_proper_values(item):
     return copy
 
 
-def generate_diff(dict1, dict2):
-    file1 = make_proper_values(dict1)
-    file2 = make_proper_values(dict2)
+def make_lines(file1, file2):
     result = []
-    all_keys = list(set(list(file1) + list(file2)))
+    all_keys = list(set(list(file2) + list(file1)))
+    make_proper_values(file1)
+    make_proper_values(file2)
     for key, value in file1.items():
         if key in file2 and file2[key] == value:
             result.append(f'   {key}: {value}\n')
             all_keys.remove(key)
         elif key in file2 and file2[key] != value:
-            result.append(f' - {key}: {value}\n '
+            result.append(f' - {key}: {value}\n'
                           f' + {key}: {file2[key]}\n')
             all_keys.remove(key)
         elif key not in file2:
@@ -32,7 +32,12 @@ def generate_diff(dict1, dict2):
         for key in all_keys:
             result.append(f' + {key}: {file2[key]}\n')
     result.sort(key=lambda x: x[3])
-    print('{\n', *result, '}')
+    return result
+
+
+def generate_diff(json1, json2):
+    result = make_lines(json1, json2)
+    return '{\n' + ''.join(result) + '}'
 
 
 def main():

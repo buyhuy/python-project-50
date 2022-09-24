@@ -19,7 +19,7 @@ json2 = json.load(open(arguments.second_file))
 
 
 def main():
-    generate_diff(json1, json2)
+    print(generate_diff(json1, json2))
 
 
 if __name__ == '__main__':
