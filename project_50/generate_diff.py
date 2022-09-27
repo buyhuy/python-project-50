@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-def make_proper_values(item):
-    copy = item.copy()
+def make_proper_values(copy):
+    # copy = item.copy()
     for key in copy:
         if copy[key] == True:
             copy[key] = 'true'
@@ -35,13 +35,13 @@ def make_lines(file1, file2):
     return result
 
 
-def generate_diff(json1, json2):
-    result = make_lines(json1, json2)
+def generate_diff(file1, file2):
+    result = make_lines(file1, file2)
     return '{\n' + ''.join(result) + '}'
 
 
 def main():
-    pass
+    print('dont call me')
 
 
 if __name__ == '__main__':

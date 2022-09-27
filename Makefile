@@ -13,8 +13,12 @@ package-install:
 lint:
 		poetry run flake8 project_50
 
-gendiff:
+
+json-gendiff:
 		poetry run gendiff tests/fixtures/file1.json tests/fixtures/file2.json
+
+yaml-gendiff:
+		poetry run gendiff tests/fixtures/file1.yaml tests/fixtures/file2.yaml
 
 test:
 		poetry run pytest
