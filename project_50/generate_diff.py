@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 
-def make_proper_values(copy):
-    # copy = item.copy()
-    for key in copy:
-        if copy[key] == True:
-            copy[key] = 'true'
-        elif copy[key] == False:
-            copy[key] = 'false'
-        elif copy[key] == None:
-            copy[key] = 'null'
-    return copy
+def make_proper_values(dict):
+    for key in dict:
+        if dict[key] == True:
+            dict[key] = 'true'
+        elif dict[key] == False:
+            dict[key] = 'false'
+        elif dict[key] == None:
+            dict[key] = 'null'
+    return dict
 
 
 def make_lines(file1, file2):
