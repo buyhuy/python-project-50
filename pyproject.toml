@@ -9,11 +9,11 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-flake8 = "^5.0.4"
-PyYAML = "^6.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
+flake8 = "^5.0.4"
+PyYAML = "^6.0"
 
 [tool.poetry.scripts]
 gendiff = "project_50.scripts.gendiff:main"

@@ -3,14 +3,16 @@
 import argparse
 import json
 import yaml
+
 from yaml.loader import SafeLoader
+from project_50.generate_diff import stylish
 
 
 parser = argparse.ArgumentParser(description='Compares two configuration '
                                              'files and shows a difference.')
 parser.add_argument('first_file')
 parser.add_argument('second_file')
-parser.add_argument('-f', '--format', help='set format of output')
+parser.add_argument('-f', '--format', default='stylish', choices=['stylish'], help='set format of output')
 
 arguments = parser.parse_args()
 
@@ -21,6 +23,9 @@ if arguments.first_file[-4:] == 'yaml' or '.yml':
 elif arguments.first_file[-5:] == '.json':
     file1 = json.load(open(arguments.first_file))
     file2 = json.load(open(arguments.second_file))
+
+if arguments.format == 'stylish':
+    formatter = stylish
 
 
 def main():

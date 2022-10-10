@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-
-import itertools
-
-
 def make_proper_values(dict):
     for key in dict:
         if dict[key] == True:
@@ -14,45 +9,36 @@ def make_proper_values(dict):
     return dict
 
 
-def make_indent(value):
-    if not isinstance(value, dict):
-        return value
-    new = {}
-    for key, val in value.items():
-        new[f'  {key}'] = make_indent(val)
-    return new
-
-
-def generate_diff(file1, file2):
+def make_lines(file1, file2):
     lines = {}
     make_proper_values(file1)
     make_proper_values(file2)
-    minus = set(file1) - set(file2)
     plus = set(file2) - set(file1)
+    minus = set(file1) - set(file2)
     neutral = set(file1) & set(file2)
-    for key in minus:
-        lines[f'- {key}'] = make_indent(file1[key])
     for key in plus:
-        lines[f'+ {key}'] = make_indent(file2[key])
+        lines[f'+ {key}'] = file2[key]
+    for key in minus:
+        lines[f'- {key}'] = file1[key]
     for key in neutral:
         if type(file1[key]) and type(file2[key]) == dict:
-            lines[f'  {key}'] = generate_diff(file1[key], file2[key])
+            lines[f'  {key}'] = make_lines(file1[key], file2[key])
         else:
             if file1[key] == file2[key]:
-                lines[f'  {key}'] = make_indent(file1[key])
+                lines[f'  {key}'] = file1[key]
             elif file1[key] != file2[key]:
-                lines[f'- {key}'] = make_indent(file1[key])
-                lines[f'+ {key}'] = make_indent(file2[key])
+                lines[f'- {key}'] = file1[key]
+                lines[f'+ {key}'] = file2[key]
     return lines
 
 
-def stylish(data, replacer=' ', spaces_count=4):
+def formatter(data, replacer=' ', spaces_count=4):
 
     def walk(value, depth):
         if type(value) != dict:
             return value
         deep_indent_size = depth + spaces_count
-        deep_indent = replacer * (deep_indent_size - 2)
+        deep_indent = replacer * deep_indent_size
         current_indent = replacer * depth
         lines = []
         for key, val in value.items():
@@ -64,9 +50,4 @@ def stylish(data, replacer=' ', spaces_count=4):
     return walk(data, 0)
 
 
-def main():
-    print('dont call me')
-
-
-if __name__ == '__main__':
-    main()
+print(formatter(make_lines(data, another_data)))
