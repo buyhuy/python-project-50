@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
 from project_50.generate_diff import generate_diff
-from project_50.parser import file1, file2
-from project_50.parser import formatter
+from project_50.parser import file1, file2, formatter
 
 
 def main():
-    print(formatter(generate_diff(file1, file2)))
+    print(generate_diff(file1, file2, formatter))
 
 
 if __name__ == '__main__':

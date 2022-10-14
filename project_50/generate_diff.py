@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import itertools
+#from project_50.formatters.stylish import stylish
 
 
 def make_proper_values(dict):
@@ -14,54 +14,42 @@ def make_proper_values(dict):
     return dict
 
 
-def make_indent(value):
+def add_indent(value):
     if not isinstance(value, dict):
         return value
     new = {}
     for key, val in value.items():
-        new[f'  {key}'] = make_indent(val)
+        new[f'  {key}'] = add_indent(val)
     return new
 
 
-def generate_diff(file1, file2):
+def make_lines(file_path1, file_path2):
     lines = {}
-    make_proper_values(file1)
-    make_proper_values(file2)
-    minus = set(file1) - set(file2)
-    plus = set(file2) - set(file1)
-    neutral = set(file1) & set(file2)
+    make_proper_values(file_path1)
+    make_proper_values(file_path2)
+    minus = set(file_path1) - set(file_path2)
+    plus = set(file_path2) - set(file_path1)
+    neutral = set(file_path1) & set(file_path2)
     for key in minus:
-        lines[f'- {key}'] = make_indent(file1[key])
+        lines[f'- {key}'] = add_indent(file_path1[key])
     for key in plus:
-        lines[f'+ {key}'] = make_indent(file2[key])
+        lines[f'+ {key}'] = add_indent(file_path2[key])
     for key in neutral:
-        if type(file1[key]) and type(file2[key]) == dict:
-            lines[f'  {key}'] = generate_diff(file1[key], file2[key])
+        if type(file_path1[key]) and type(file_path2[key]) == dict:
+            lines[f'  {key}'] = make_lines(file_path1[key], file_path2[key])
         else:
-            if file1[key] == file2[key]:
-                lines[f'  {key}'] = make_indent(file1[key])
-            elif file1[key] != file2[key]:
-                lines[f'- {key}'] = make_indent(file1[key])
-                lines[f'+ {key}'] = make_indent(file2[key])
+            if file_path1[key] == file_path2[key]:
+                lines[f'  {key}'] = add_indent(file_path1[key])
+            elif file_path1[key] != file_path2[key]:
+                lines[f'- {key}'] = add_indent(file_path1[key])
+                lines[f'+ {key}'] = add_indent(file_path2[key])
     return lines
 
 
-def stylish(data, replacer=' ', spaces_count=4):
-
-    def walk(value, depth):
-        if type(value) != dict:
-            return value
-        deep_indent_size = depth + spaces_count
-        deep_indent = replacer * (deep_indent_size - 2)
-        current_indent = replacer * depth
-        lines = []
-        for key, val in value.items():
-            lines.append(f'{deep_indent}{key}: {walk(val, deep_indent_size)}')
-        lines.sort(key=lambda x: x.strip('+- '))
-        result = itertools.chain('{', lines, [current_indent + '}'])
-        return '\n'.join(result)
-
-    return walk(data, 0)
+def generate_diff(data1, data2, format):
+    lines = make_lines(data1, data2)
+    result = format(lines)
+    return result
 
 
 def main():
