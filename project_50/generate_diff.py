@@ -1,17 +1,6 @@
 #!/usr/bin/env python3
 
-#from project_50.formatters.stylish import stylish
-
-
-def make_proper_values(dict):
-    for key in dict:
-        if dict[key] == True:
-            dict[key] = 'true'
-        elif dict[key] == False:
-            dict[key] = 'false'
-        elif dict[key] == None:
-            dict[key] = 'null'
-    return dict
+from project_50.formatters.stylish import stylish
 
 
 def add_indent(value):
@@ -25,8 +14,6 @@ def add_indent(value):
 
 def make_lines(file_path1, file_path2):
     lines = {}
-    make_proper_values(file_path1)
-    make_proper_values(file_path2)
     minus = set(file_path1) - set(file_path2)
     plus = set(file_path2) - set(file_path1)
     neutral = set(file_path1) & set(file_path2)
@@ -46,7 +33,7 @@ def make_lines(file_path1, file_path2):
     return lines
 
 
-def generate_diff(data1, data2, format):
+def generate_diff(data1, data2, format=stylish):
     lines = make_lines(data1, data2)
     result = format(lines)
     return result

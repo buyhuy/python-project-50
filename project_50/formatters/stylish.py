@@ -3,11 +3,23 @@
 import itertools
 
 
+def make_proper_values(dict):
+    for key in dict:
+        if dict[key] == True:
+            dict[key] = 'true'
+        elif dict[key] == False:
+            dict[key] = 'false'
+        elif dict[key] == None:
+            dict[key] = 'null'
+    return dict
+
+
 def stylish(data, replacer=' ', spaces_count=4):
 
     def walk(value, depth):
         if type(value) != dict:
             return value
+        make_proper_values(value)
         deep_indent_size = depth + spaces_count
         deep_indent = replacer * (deep_indent_size - 2)
         current_indent = replacer * depth
@@ -22,9 +34,8 @@ def stylish(data, replacer=' ', spaces_count=4):
 
 
 def main():
-    print('dont call me')
+    pass
 
 
 if __name__ == '__main__':
     main()
-    
