@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+from project_50.formatters.stylish import make_proper_values
+
+
 def is_complex(value):
     if isinstance(value, dict):
         return '[complex value]'
@@ -14,8 +17,9 @@ def add_quotes(value):
 
 
 def plain(data):
-    
+
     def walk(value, path='', lines=[]):
+        make_proper_values(value)
         for key, val in value.items():
             value_path = path + ' ' + key.strip('+ -')
             value_path = '.'.join(value_path.split())
@@ -39,7 +43,7 @@ def plain(data):
 
 
 def main():
-    print('dont call me')
+    pass
 
 
 if __name__ == '__main__':
