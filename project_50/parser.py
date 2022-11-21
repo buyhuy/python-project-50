@@ -8,6 +8,7 @@ from yaml.loader import SafeLoader
 from project_50.formatters.stylish import stylish
 from project_50.formatters.plain import plain
 from project_50.formatters.json import json
+from project_50.generate_diff import make_proper_values
 
 
 parser = argparse.ArgumentParser(description='Compares two configuration '
@@ -20,11 +21,11 @@ parser.add_argument('-f', '--format', choices=['stylish', 'plain', 'json'],
 arguments = parser.parse_args()
 
 if arguments.first_file[-4:] == 'yaml' or '.yml':
-    file1 = yaml.load(open(arguments.first_file), Loader=SafeLoader)
-    file2 = yaml.load(open(arguments.second_file), Loader=SafeLoader)
+    file1 = make_proper_values(yaml.load(open(arguments.first_file), Loader=SafeLoader))
+    file2 = make_proper_values(yaml.load(open(arguments.second_file), Loader=SafeLoader))
 elif arguments.first_file[-5:] == '.json':
-    file1 = js.load(open(arguments.first_file))
-    file2 = js.load(open(arguments.second_file))
+    file1 = make_proper_values(js.load(open(arguments.first_file)))
+    file2 = make_proper_values(js.load(open(arguments.second_file)))
 
 if arguments.format == 'stylish':
     formatter = stylish
