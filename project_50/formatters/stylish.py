@@ -31,10 +31,7 @@ def stylish(data, replacer=" ", spaces_count=4):
         lst = []
         for key, val in value.items():
             if val["status"] == "same":
-                if isinstance(val["value"], dict):
-                    lst.append(f'{deep_indent}  {key}: {walk(val["value"], deep_indent_size)}')
-                else:
-                    lst.append(f'{deep_indent}  {key}: {dict_indent(val["value"], deep_indent_size)}')
+                lst.append(f'{deep_indent}  {key}: {walk(val["value"], deep_indent_size)}')
             elif val["status"] == "changed":
                 lst.append(f'{deep_indent}- {key}: {dict_indent(val["old_value"], deep_indent_size)}')
                 lst.append(f'{deep_indent}+ {key}: {dict_indent(val["new_value"], deep_indent_size)}')

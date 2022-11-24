@@ -20,12 +20,10 @@ yaml2 = fix_values(yaml.load(open('tests/fixtures/file2.yaml'), Loader=SafeLoade
 
 
 def test_json_generate_diff():
-    assert stylish(generate_diff(json1, json2, stylish)) == expected_stylish
+    assert stylish(generate_diff(json1, json2)) == expected_stylish
     #assert generate_diff(json1, json2, plain) == expected_plain
 
 
 def test_yaml_generate_diff():
-    yaml1 = yaml.load(open('tests/fixtures/file1.yaml'), Loader=SafeLoader)
-    yaml2 = yaml.load(open('tests/fixtures/file2.yaml'), Loader=SafeLoader)
-    assert stylish(generate_diff(yaml1, yaml2, stylish)) == expected_stylish
+    assert stylish(generate_diff(yaml1, yaml2)) == expected_stylish
     #assert generate_diff(yaml1, yaml2, plain) == expected_plain
