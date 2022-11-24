@@ -3,18 +3,6 @@
 from itertools import chain
 
 
-def make_proper_values(dic):
-    for key in dic:
-        if isinstance(dic[key], dict):
-            make_proper_values(dic[key])
-        if dic[key] == True:
-            dic[key] = 'true'
-        elif dic[key] == False:
-            dic[key] = 'false'
-        elif dic[key] == None:
-            dic[key] = 'null'
-
-
 def dict_indent(value, depth, replacer=" ", spaces_count=4):
 
     if not isinstance(value, dict):
@@ -30,35 +18,34 @@ def dict_indent(value, depth, replacer=" ", spaces_count=4):
     return '\n'.join(result)
 
 
-def list_indent(data, depth=0, replacer=" ", spaces_count=4):
-    
-    if not isinstance(data, list) and isinstance(data.setdefault("value", "not list"), list):
-        return dict_indent(data, depth)
+def stylish(data, replacer=" ", spaces_count=4):
 
-    lst = []
-    deep_indent_size = depth + spaces_count
-    deep_indent = replacer * (deep_indent_size - 2)  # "- 2" need for pretty indent
-    current_indent = replacer * depth
-    for dic in data:
-        if dic["status"] == "same":
-            lst.append(f'{deep_indent}  {dic["key"]}: {list_indent(dic["value"], deep_indent_size)}')
-        elif dic["status"] == "removed":
-            lst.append(f'{deep_indent}- {dic["key"]}: {list_indent(dic["value"], deep_indent_size)}')
-        elif dic["status"] == "added":
-            lst.append(f'{deep_indent}+ {dic["key"]}: {list_indent(dic["value"], deep_indent_size)}')
-        elif dic["status"] == "changed":
-            lst.append(f'{deep_indent}- {dic["key"]}: {list_indent(dic["old_value"], deep_indent_size)}')
-            lst.append(f'{deep_indent}+ {dic["key"]}: {list_indent(dic["new_value"], deep_indent_size)}')
-    result = chain("{", lst, [current_indent + "}"])
-    return "\n".join(result)
+    def walk(value, depth):
 
+        if not isinstance(value, dict):
+            return value
 
-def stylish(data):
-    lst = []
-    for dic in data:
-        if isinstance(dic.setdefault("value", "not list"), list):
-            lst.append(stylish(dic["value"]))
-    return lst
+        deep_indent_size = depth + spaces_count
+        deep_indent = replacer * (deep_indent_size - 2)  # "- 2" need for pretty indent
+        current_indent = replacer * depth
+        lst = []
+        for key, val in value.items():
+            if val["status"] == "same":
+                if isinstance(val["value"], dict):
+                    lst.append(f'{deep_indent}  {key}: {walk(val["value"], deep_indent_size)}')
+                else:
+                    lst.append(f'{deep_indent}  {key}: {dict_indent(val["value"], deep_indent_size)}')
+            elif val["status"] == "changed":
+                lst.append(f'{deep_indent}- {key}: {dict_indent(val["old_value"], deep_indent_size)}')
+                lst.append(f'{deep_indent}+ {key}: {dict_indent(val["new_value"], deep_indent_size)}')
+            elif val["status"] == "removed":
+                lst.append(f'{deep_indent}- {key}: {dict_indent(val["value"], deep_indent_size)}')
+            elif val["status"] == "added":
+                lst.append(f'{deep_indent}+ {key}: {dict_indent(val["value"], deep_indent_size)}')
+        result = chain("{", lst, [current_indent + "}"])
+        return '\n'.join(result)
+
+    return walk(data, 0)
 
 
 def main():
