@@ -7,7 +7,7 @@ def is_complex(value):
     return value
 
 
-def add_quotes(value):
+def quotes(value):
     lst = ['null', 'true', 'false', '[complex value]']
     if value not in lst:
         return f"'{value}'"
@@ -16,25 +16,28 @@ def add_quotes(value):
 
 def plain(data):
 
-    def walk(value, path='', lines=[]):
+    def walk(value, path="", lines = []):
+
+        if not isinstance(value, dict):
+            return
+
         for key, val in value.items():
-            value_path = path + ' ' + key.strip('+ -')
-            value_path = '.'.join(value_path.split())
-            if key.startswith('-'):
-                if key.replace('-', '+') not in value:
-                    lines.append(f"Property '{value_path}' was removed")
-                else:
-                    updated_key = key.replace('-', '+')
-                    lines.append(f"Property '{value_path}' was updated. "
-                                 f"From {add_quotes(is_complex(value[key]))} "
-                                 f"to {add_quotes(is_complex(value[updated_key]))}")
-            elif key.startswith('+') and key.replace('+', '-') not in value:
-                lines.append(f"Property '{value_path}' was added "
-                             f"with value: {add_quotes(is_complex(val))}")
-            elif key.startswith(' '):
-                if isinstance(val, dict):
-                    walk(val, value_path)
-        return '\n'.join(sorted(lines))
+            if val["status"] == "same":
+                val_path = ".".join((path + " " + str(key)).split())
+                walk(val["value"], val_path)
+            elif val["status"] == "changed":
+                val_path = ".".join((path + " " + str(key)).split())
+                lines.append(f"Property '{val_path}' was updated. From "
+                             f"{quotes(is_complex(val['old_value']))} to "
+                             f"{quotes(is_complex(val['new_value']))}")
+            elif val["status"] == "removed":
+                val_path = ".".join((path + " " + str(key)).split())
+                lines.append(f"Property '{val_path}' was removed")
+            elif val["status"] == "added":
+                val_path = ".".join((path + " " + str(key)).split())
+                lines.append(f"Property '{val_path}' was added "
+                             f"with value: {quotes(is_complex(val['value']))}")
+        return "\n".join(lines)
 
     return walk(data)
 
