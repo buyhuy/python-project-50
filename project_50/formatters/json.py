@@ -4,7 +4,7 @@ import json as js
 
 
 def json(data):
-    result = js.dumps(data, indent=5, sort_keys=lambda x: x.strip(' +-'))
+    result = js.dumps(data, indent=4)
     return result
 
 
