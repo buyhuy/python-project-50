@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from project_50.formatters.stylish import stylish
+from gendiff.formatters.stylish import stylish
 
 
 def fix_values(dic):

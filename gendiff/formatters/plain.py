@@ -16,7 +16,7 @@ def quotes(value):
 
 def plain(data):
 
-    def walk(value, path="", lines = []):
+    def walk(value, path="", lines=[]):
 
         if not isinstance(value, dict):
             return
