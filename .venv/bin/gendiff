@@ -1,5 +1,5 @@
 #!/home/vaditel/python-project-50/.venv/bin/python
-from project_50.scripts.gendiff import main
+from gendiff.scripts.gendiff import main
 
 if __name__ == '__main__':
     main()
