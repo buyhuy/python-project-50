@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
-from project_50.formatters.stylish import stylish
+import json
+import yaml
+
+from yaml.loader import SafeLoader
+from gendiff.formatters.stylish import stylish
 
 
 def fix_values(dic):
@@ -40,8 +44,17 @@ def build_diff(old_dic, new_dic):
     return diff
 
 
-def generate_diff(file1, file2, formatter=stylish):
+def generate_diff(first_path, second_path, formatter=stylish):
+    
+    if first_path[-4:] == 'yaml' or '.yml':
+        file1 = fix_values(yaml.load(open(first_path), Loader=SafeLoader))
+        file2 = fix_values(yaml.load(open(second_path), Loader=SafeLoader))
+    elif second_path[-5:] == '.json':
+        file1 = fix_values(json.load(open(first_path)))
+        file2 = fix_values(json.load(open(second_path)))
+
     diff = build_diff(file1, file2)
+
     return formatter(diff)
 
 

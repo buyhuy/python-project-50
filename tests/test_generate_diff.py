@@ -4,21 +4,21 @@ import json as js
 import yaml
 
 from yaml.loader import SafeLoader
-from project_50.formatters.stylish import stylish
-from project_50.formatters.plain import plain
-from project_50.formatters.json import json
-from project_50.gendiff import generate_diff, fix_values
+from gendiff.formatters.stylish import stylish
+from gendiff.formatters.plain import plain
+from gendiff.formatters.json import json
+from gendiff.generate_diff import generate_diff
 
 
 expected_stylish = open('tests/fixtures/stylish_expected.txt').read()
 expected_plain = open('tests/fixtures/plain_expected.txt').read()
 expected_json = open('tests/fixtures/json_expected.txt').read()
 
-json1 = fix_values(js.load(open('tests/fixtures/file1.json')))
-json2 = fix_values(js.load(open('tests/fixtures/file2.json')))
+json1 = 'tests/fixtures/file1.json'
+json2 = 'tests/fixtures/file2.json'
 
-yaml1 = fix_values(yaml.load(open('tests/fixtures/file1.yaml'), Loader=SafeLoader))
-yaml2 = fix_values(yaml.load(open('tests/fixtures/file2.yaml'), Loader=SafeLoader))
+yaml1 = 'tests/fixtures/file1.yaml'
+yaml2 = 'tests/fixtures/file2.yaml'
 
 
 def test_json_generate_diff():
