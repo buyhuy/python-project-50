@@ -45,7 +45,7 @@ def build_diff(old_dic, new_dic):
 
 
 def generate_diff(first_path, second_path, formatter=stylish):
-    
+
     if first_path[-4:] == 'yaml' or '.yml':
         file1 = fix_values(yaml.load(open(first_path), Loader=SafeLoader))
         file2 = fix_values(yaml.load(open(second_path), Loader=SafeLoader))
