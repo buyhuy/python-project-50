@@ -5,10 +5,10 @@ import json as js
 import yaml
 
 from yaml.loader import SafeLoader
-from gendiff.formatters.stylish import stylish
-from gendiff.formatters.plain import plain
-from gendiff.formatters.json import json
-from gendiff.generate_diff import fix_values
+from project_50.formatters.stylish import stylish
+from project_50.formatters.plain import plain
+from project_50.formatters.json import json
+from project_50.gendiff import fix_values
 
 
 parser = argparse.ArgumentParser(description='Compares two configuration '

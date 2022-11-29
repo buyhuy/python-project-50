@@ -4,10 +4,10 @@ import json as js
 import yaml
 
 from yaml.loader import SafeLoader
-from gendiff.formatters.stylish import stylish
-from gendiff.formatters.plain import plain
-from gendiff.formatters.json import json
-from gendiff.generate_diff import generate_diff, fix_values
+from project_50.formatters.stylish import stylish
+from project_50.formatters.plain import plain
+from project_50.formatters.json import json
+from project_50.gendiff import generate_diff, fix_values
 
 
 expected_stylish = open('tests/fixtures/stylish_expected.txt').read()

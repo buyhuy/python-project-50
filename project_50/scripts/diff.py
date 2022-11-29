@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from gendiff.generate_diff import generate_diff
-from gendiff.parser import file1, file2, formatter
+from project_50.gendiff import generate_diff
+from project_50.parser import file1, file2, formatter
 
 
 def main():
