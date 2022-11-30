@@ -3,21 +3,19 @@
 import json
 import yaml
 
-from yaml.loader import SafeLoader
 from gendiff.formatters.stylish import stylish
 
 
-def fix_values(dic):
-    for key in dic:
-        if isinstance(dic[key], dict):
-            fix_values(dic[key])
-        if dic[key] == True:
-            dic[key] = 'true'
-        elif dic[key] == False:
-            dic[key] = 'false'
-        elif dic[key] == None:
-            dic[key] = 'null'
-    return dic
+fixed_values = {True: "true", False: "false", None: "null"}
+
+
+def normalize_values(file):
+    for key, val in file.items():
+        if isinstance(val, dict):
+            normalize_values(val)
+        elif isinstance(val, (bool, type(None))):
+            file[key] = fixed_values[val]
+    return file
 
 
 def build_diff(old_dic, new_dic):
@@ -47,11 +45,11 @@ def build_diff(old_dic, new_dic):
 def generate_diff(first_path, second_path, formatter=stylish):
 
     if first_path[-4:] == 'yaml' or '.yml':
-        file1 = fix_values(yaml.load(open(first_path), Loader=SafeLoader))
-        file2 = fix_values(yaml.load(open(second_path), Loader=SafeLoader))
+        file1 = normalize_values(yaml.safe_load(open(first_path)))
+        file2 = normalize_values(yaml.safe_load(open(second_path)))
     elif second_path[-5:] == '.json':
-        file1 = fix_values(json.load(open(first_path)))
-        file2 = fix_values(json.load(open(second_path)))
+        file1 = normalize_values(json.load(open(first_path)))
+        file2 = normalize_values(json.load(open(second_path)))
 
     diff = build_diff(file1, file2)
 
