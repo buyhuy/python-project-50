@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 
+lst = ['null', 'true', 'false', '[complex value']
 
-def is_complex(value):
+
+def make_view(value):
     if isinstance(value, dict):
         return '[complex value]'
-    return value
-
-
-def quotes(value):
-    lst = ['null', 'true', 'false', '[complex value]']
-    if value not in lst:
+    elif isinstance(value, (int, float)):
+        return value
+    elif value not in lst:
         return f"'{value}'"
     return value
 
@@ -28,15 +27,15 @@ def plain(data):
             elif val["status"] == "changed":
                 val_path = ".".join((path + " " + str(key)).split())
                 lines.append(f"Property '{val_path}' was updated. From "
-                             f"{quotes(is_complex(val['old_value']))} to "
-                             f"{quotes(is_complex(val['new_value']))}")
+                             f"{make_view(val['old_value'])} to "
+                             f"{make_view(val['new_value'])}")
             elif val["status"] == "removed":
                 val_path = ".".join((path + " " + str(key)).split())
                 lines.append(f"Property '{val_path}' was removed")
             elif val["status"] == "added":
                 val_path = ".".join((path + " " + str(key)).split())
                 lines.append(f"Property '{val_path}' was added "
-                             f"with value: {quotes(is_complex(val['value']))}")
+                             f"with value: {make_view(val['value'])}")
         return "\n".join(lines)
 
     return walk(data)
