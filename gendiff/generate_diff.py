@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
-import json
+import json as js
 import yaml
 
 from gendiff.formatters.stylish import stylish
+from gendiff.formatters.plain import plain
+from gendiff.formatters.json import json
 
 
 fixed_values = {True: "true", False: "false", None: "null"}
@@ -42,18 +44,25 @@ def build_diff(old_dic, new_dic):
     return diff
 
 
-def generate_diff(first_path, second_path, formatter=stylish):
+def generate_diff(first_path, second_path, formatter='stylish'):
 
     if first_path[-4:] == 'yaml' or '.yml':
         file1 = normalize_values(yaml.safe_load(open(first_path)))
         file2 = normalize_values(yaml.safe_load(open(second_path)))
     elif second_path[-5:] == '.json':
-        file1 = normalize_values(json.load(open(first_path)))
-        file2 = normalize_values(json.load(open(second_path)))
+        file1 = normalize_values(js.load(open(first_path)))
+        file2 = normalize_values(js.load(open(second_path)))
+
+    if formatter == 'stylish':
+        format = stylish
+    elif formatter == 'plain':
+        format = plain
+    elif formatter == 'json':
+        format = json
 
     diff = build_diff(file1, file2)
 
-    return formatter(diff)
+    return format(diff)
 
 
 def main():

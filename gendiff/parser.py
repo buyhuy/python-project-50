@@ -2,10 +2,6 @@
 
 import argparse
 
-from gendiff.formatters.stylish import stylish
-from gendiff.formatters.plain import plain
-from gendiff.formatters.json import json
-
 
 parser = argparse.ArgumentParser(description='Compares two configuration '
                                              'files and shows a difference.')
@@ -19,12 +15,7 @@ arguments = parser.parse_args()
 first_path = arguments.first_file
 second_path = arguments.second_file
 
-if arguments.format == 'stylish':
-    formatter = stylish
-elif arguments.format == 'plain':
-    formatter = plain
-elif arguments.format == 'json':
-    formatter = json
+formatter = arguments.format
 
 
 def main():

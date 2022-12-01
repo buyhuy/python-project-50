@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-import json as js
-import yaml
-
-from yaml.loader import SafeLoader
 from gendiff.formatters.stylish import stylish
 from gendiff.formatters.plain import plain
 from gendiff.formatters.json import json
