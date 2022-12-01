@@ -1,4 +1,4 @@
-name: Vadya CI
+name: gendiff_cli
 
 on:
   - push
@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11"]
+        python-version: [3.8, 3.11]
     steps:
       - uses: actions/checkout@v3
-      - name: Install python
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install poetry
-          poetry install
+          make install
       - name: Run linter and pytest
         run: |
           make test
